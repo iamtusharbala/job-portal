@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 8080
 
 
 // DOTENV configuration
-dotenv.config({ path: './config.env' })
+dotenv.config({ path: './.env' })
 
 // Connect to DATABASE
 connect()
