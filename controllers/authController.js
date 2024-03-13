@@ -1,7 +1,8 @@
 import User from "../models/userSchema.js";
+import { passwordHashing } from "../utils/auth.js";
 
 
-export const registerController = async (req, res) => {
+export const registerController = async (req, res, next) => {
     try {
         const { name, emailId, password, location } = req.body
         if (!name) {
@@ -35,8 +36,9 @@ export const registerController = async (req, res) => {
                 message: "User already exists"
             })
         }
+        const hashedPassword = passwordHashing(password)
         const newUser = new User({
-            name, emailId, password, location
+            name, emailId, password: hashedPassword, location
         })
         await newUser.save()
         res.status(201).send({
@@ -44,11 +46,6 @@ export const registerController = async (req, res) => {
             message: "New User created successfully"
         })
     } catch (error) {
-        console.log(error);
-        res.status(400).send({
-            status: false,
-            message: "Error in Register Controller",
-            error
-        })
+        next(error)
     }
 }

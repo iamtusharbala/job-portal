@@ -6,6 +6,7 @@ import cors from 'cors'
 
 import { connect } from './config/connect.js'
 import router from './routes/route.js'
+import { errorMiddleware } from './middlewares/errorMiddleware.js'
 const PORT = process.env.PORT || 8080
 
 
@@ -26,6 +27,9 @@ app.use(cors())
 
 // Route
 app.use('/api/v1', router)
+
+// Error Handling Middleware
+app.use(errorMiddleware)
 
 
 // PORT listen
