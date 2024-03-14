@@ -62,7 +62,6 @@ export const loginController = async (req, res, next) => {
             })
         }
         const checkUser = await User.findOne({ emailId })
-        console.log(checkUser)
         if (!checkUser) {
             return res.status(400).send({
                 success: false,
@@ -78,12 +77,31 @@ export const loginController = async (req, res, next) => {
             })
         }
         const token = JWT.sign({ _id: checkUser._id }, process.env.JWT_SECRET, { expiresIn: '2d' })
+        req.user = token
         res.status(200).send({
             success: true,
             message: "Logged in succesfully",
             token
         })
+        // console.log(req);
 
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const userUpdateController = async (req, res, next) => {
+    try {
+        const { name, emailId, password, location } = req.body
+        if (!name || !emailId || !password) {
+            next("Name Email Password are required")
+        }
+        const user = await User.findOneAndUpdate({ _id: req.user._id }, { name, emailId, password, location }, { new: true, runValidators: true })
+        return res.status(200).send({
+            status: true,
+            message: "User details updated successfully",
+            user
+        })
     } catch (error) {
         next(error)
     }
