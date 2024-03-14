@@ -10,10 +10,10 @@ const jobSchema = new Schema({
     position: {
         type: String,
         required: [true, 'Position is required'],
-        minLength: 10
+        maxLength: 100
     },
     status: {
-        tye: String,
+        type: String,
         enum: ['pending', 'rejected', 'interview'],
         default: 'pending'
     },

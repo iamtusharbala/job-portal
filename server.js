@@ -5,7 +5,8 @@ import cors from 'cors'
 
 
 import { connect } from './config/connect.js'
-import router from './routes/route.js'
+import userRoute from './routes/userRoute.js'
+import jobRoute from './routes/jobRoute.js'
 import { errorMiddleware } from './middlewares/errorMiddleware.js'
 const PORT = process.env.PORT || 8080
 
@@ -26,7 +27,8 @@ app.use(cors())
 
 
 // Route
-app.use('/api/v1', router)
+app.use('/api/v1/user', userRoute)
+app.use('/api/v1/job', jobRoute)
 
 // Error Handling Middleware
 app.use(errorMiddleware)
