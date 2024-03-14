@@ -19,8 +19,8 @@ export const createJobController = async (req, res, next) => {
 
 export const getAllJobs = async (req, res, next) => {
     try {
-
-
+        const fetchJobs = await Job.find()
+        res.status(200).send({ success: true, message: "Jobs fetched successfully", length: fetchJobs.length, fetchJobs })
     } catch (error) {
         next(error)
     }
