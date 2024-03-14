@@ -70,3 +70,11 @@ export const deleteJobs = async (req, res, next) => {
         next(error)
     }
 }
+
+export const jobStatsController = async (req, res, next) => {
+    try {
+
+    } catch (error) {
+        next(error)
+    }
+}

@@ -2,6 +2,10 @@ import express from 'express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
 import cors from 'cors'
+import helmet from 'helmet'
+import xss from 'xss-clean'
+import mongoSanitize from 'mongo-sanitize'
+
 
 
 import { connect } from './config/connect.js'
@@ -24,6 +28,11 @@ const app = express()
 app.use(express.json())
 app.use(morgan('dev'))
 app.use(cors())
+
+// Security
+app.use(helmet())
+app.use(xss())
+app.use(mongoSanitize())
 
 
 // Route
