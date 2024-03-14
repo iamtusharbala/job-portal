@@ -4,7 +4,10 @@ import morgan from 'morgan'
 import cors from 'cors'
 import helmet from 'helmet'
 import xss from 'xss-clean'
-import mongoSanitize from 'mongo-sanitize'
+
+// API Documentation
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUI from 'swagger-ui-express'
 
 
 
@@ -21,6 +24,25 @@ dotenv.config({ path: './.env' })
 // Connect to DATABASE
 connect()
 
+// Swagger API Config
+const options = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: "Job Portal Application",
+            description: "A Node.js express job Portal Application"
+        },
+        servers: [
+            {
+                url: 'http://localhost:8080/'
+            }
+        ]
+    },
+    apis: ['./routes/*.js']
+}
+
+const spec = swaggerJSDoc(options)
+
 // App Object
 const app = express()
 
@@ -32,7 +54,7 @@ app.use(cors())
 // Security
 app.use(helmet())
 app.use(xss())
-app.use(mongoSanitize())
+// app.use(mongoSanitize())
 
 
 // Route
@@ -41,6 +63,10 @@ app.use('/api/v1/job', jobRoute)
 
 // Error Handling Middleware
 app.use(errorMiddleware)
+
+
+// home route
+app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(spec))
 
 
 // PORT listen
